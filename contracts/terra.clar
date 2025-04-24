@@ -147,12 +147,19 @@
             { vote: vote-value }
           )
           
-          ;; Update vote tallies
-          (map-set proposals
-            { id: proposal-id }
-            (merge proposal
-              (if vote-value
+          ;; Update vote tallies - Fixed the issue here
+          (if vote-value
+            ;; If yes vote
+            (map-set proposals
+              { id: proposal-id }
+              (merge proposal
                 { yes-votes: (+ (get yes-votes proposal) voter-balance) }
+              )
+            )
+            ;; If no vote
+            (map-set proposals
+              { id: proposal-id }
+              (merge proposal
                 { no-votes: (+ (get no-votes proposal) voter-balance) }
               )
             )
