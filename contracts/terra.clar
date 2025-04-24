@@ -174,7 +174,7 @@
     (if (< proposal-end-height block-height)
       ;; Check if execution delay is satisfied
       (if (> block-height (+ proposal-end-height execution-delay))
-        (if (string-eq? (get status proposal) "active")
+        (if (is-eq (get status proposal) "active")
           (begin
             ;; Update proposal status based on votes
             (map-set proposals
@@ -216,7 +216,7 @@
 (define-public (release-funds (proposal-id uint) (recipient principal))
   (let ((proposal (unwrap! (get-proposal proposal-id) (err ERR-PROPOSAL-NOT-FOUND))))
     (asserts! (is-eq tx-sender contract-owner) (err ERR-NOT-AUTHORIZED))
-    (asserts! (string-eq? (get status proposal) "approved") (err ERR-PROPOSAL-EXPIRED))
+    (asserts! (is-eq (get status proposal) "approved") (err ERR-PROPOSAL-EXPIRED))
     
     ;; Transfer STX to the recipient (farmer)
     (as-contract (stx-transfer? (get amount proposal) tx-sender recipient))
